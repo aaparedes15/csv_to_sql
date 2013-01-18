@@ -1,0 +1,9 @@
+create options to let user choose database.
+
+create option to let user choose table name.
+
+create option to let user specify comment lines in the .csv file.
+
+create option to let user specify delimeter of .csv file data.
+
+make it so that there are more data types that are allowed.
