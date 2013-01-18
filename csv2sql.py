@@ -3,6 +3,9 @@
 """
 Take an input file in csv format and 
 create an SQL database table.
+
+To run from the command line:
+    csv2sql.py "csv_file_name"
 """
 
 import sqlite3
@@ -57,6 +60,7 @@ def main(csv_file):
     # close the connection to the database
     con.close()
 
-
-
-
+# To run it from command line
+if __name__=="__main__":
+    from sys import argv
+    main(argv[1])
