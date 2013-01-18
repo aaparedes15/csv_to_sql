@@ -46,6 +46,17 @@ def main(csv_file):
     create_table_command += ")"
     cur.execute(create_table_command)
 
+    # insert the rows of data into the table.
+    for row in data:
+        cur.execute(
+            "INSERT INTO {0} VALUES {1}".format(csv_file[:-4],str(row)))
+
+    # Save (commit) the database
+    con.commit()
+
+    # close the connection to the database
+    con.close()
+
 
 
 
