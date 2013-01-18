@@ -5,7 +5,7 @@ Take an input file in csv format and
 create an SQL database table.
 
 To run from the command line:
-    csv2sql.py "csv_file_name"
+    csv2sql.py "csv_file_name" [options]
 """
 
 # import needed modules
@@ -87,8 +87,6 @@ def csv2sql(database, table, comments="#", delimiter=","):
 
 # To run it from command line
 if __name__=="__main__":
-    # get optional arguments from command line
-    args = get_args()
     csv2sql(opts['database'], 
             opts['table'], 
             comments=opts['comments'], 
