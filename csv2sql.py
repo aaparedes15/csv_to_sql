@@ -10,7 +10,6 @@ To run from the command line:
 
 # import needed modules
 import sqlite3
-from   matplotlib.mlab import csv2rec
 
 # get csv file from command line
 from sys import argv
@@ -46,9 +45,22 @@ def get_data_type(data):
     the SQL data type name.
     """
     
-    if "string" in str(type(data)): return "TEXT"
-    if "float"  in str(type(data)): return "REAL"
-    if "int"    in str(type(data)): return "INTEGER"
+    if type(data) == str: return "TEXT"
+    if type(data) == int: return "INTEGER"
+    if type(data) == float: return "REAL"
+
+def import_data(file, comments="#", delimiter=","):
+    """
+    Put the data into a list
+    of list, ommitting comment
+    lines.
+    """
+    data = open(file) 
+    rows = []
+    for row in data.readlines():
+        if row[0] == comments: pass
+        rows.append(row.split(delimiter)[:-1])
+    return rows
 
 def csv2sql(database, table, comments="#", delimiter=","):
     """
@@ -64,19 +76,19 @@ def csv2sql(database, table, comments="#", delimiter=","):
     cur = con.cursor()
 
     # load in the data
-    data = csv2rec(csv_file, comments=comments, delimiter=delimiter)
+    data = import_data(csv_file, comments=comments, delimiter=delimiter)
 
     # make the table
     create_table_command = "CREATE TABLE {0} (".format(table)
-    for n, t in zip(data.dtype.names, data[0]):
-        create_table_command += "{0} {1}, ".format(n, get_data_type(t))
+    for n in data[0]:
+        create_table_command += "{0} {1}, ".format(n, get_data_type(n))
     create_table_command += ")"
     cur.execute(create_table_command)
 
     # insert the rows of data into the table.
-    for row in data:
+    for row in data[1:] 
         cur.execute(
-            "INSERT INTO {0} VALUES {1}".format(table, str(row)))
+            "INSERT INTO {0} VALUES {1}".format(table, str(tuple(row))))
 
     # Save (commit) the database
     con.commit()
